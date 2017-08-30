@@ -34,32 +34,27 @@ public class CarOperation : MonoBehaviour {
             else
             {
                 speed -= speed.normalized * acceleration / 2 * Time.deltaTime;
+                if (speed.magnitude <= 0.5f && speed.magnitude >= -1.0f) speed = Vector3.zero;
             }
 
             if (Input.GetKey(KeyCode.RightArrow))
-            {
-                transform.Rotate(0.0f, turning * speed.magnitude / topspeed * Time.deltaTime, 0.0f);
-            }
+                transform.Rotate(0.5f, turning * (speed.magnitude / topspeed) * Time.deltaTime, 0.0f);
+
             if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                transform.Rotate(0.0f, -turning * speed.magnitude / topspeed * Time.deltaTime, 0.0f);
-            }
+                transform.Rotate(0.0f, -turning * (speed.magnitude / topspeed) * Time.deltaTime, 0.0f);
         }
         else
         {
             if (Input.GetKey(KeyCode.RightArrow))
-            {
                 transform.Rotate(0.0f, turning * speed.magnitude / (topspeed*2) * Time.deltaTime, 0.0f);
-            }
+
             if (Input.GetKey(KeyCode.LeftArrow))
-            {
                 transform.Rotate(0.0f, -turning * speed.magnitude / (topspeed * 2) * Time.deltaTime, 0.0f);
-            }
 
             speed.y -= speed.normalized.y * acceleration / 3 * Time.deltaTime;
         }
 
-        //Debug.Log(speed);
+        //Debug.Log(speed.magnitude);
         transform.Translate(speed * Time.deltaTime, Space.World);
     }
 
@@ -73,6 +68,6 @@ public class CarOperation : MonoBehaviour {
 
     void OnGUI()
     {
-        //GUI.Box(new Rect(0, 0, 100, 40), "" + this.GetComponent<Rigidbody>().velocity.magnitude);
+        GUI.Box(new Rect(0, 0, 100, 40), "speed:" + speed.magnitude.ToString("F2"));
     }
 }
